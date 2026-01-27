@@ -1,0 +1,7 @@
+[settings]
+file_path = "/home/gpuuser/personall_directories/cforconi/l/ap/litv-exp/2025-04-09_G22-00018_00203_ssanjari/data_bank2/ntcap/iq/IQ_2025-04-05_14-15-19/"
+starting_file = "91"
+lframes = "2**18"
+average_every = "32"
+output_location = "/home/gpuuser/personall_directories/zac/IQ_2025-04-05_14-15-19_NPZ/"
+logging_level = "DEBUG"
