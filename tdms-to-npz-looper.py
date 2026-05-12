@@ -24,6 +24,17 @@ def get_filelist(path):
     return datafiles
 
 
+def get_preexisting_files(path):
+    logger.info(f"Getting list of existing output files from {path}")
+    datafiles = os.listdir(path)
+    datafiles = sorted(datafiles)
+
+    filenumbers = [int(x.split(".")[0]) for x in datafiles]
+    logger.info("Complete")
+
+    return filenumbers
+
+
 def get_settings(filepath, filename, lframes):
     fullpath = filepath + filename
     iq = tools.get_iq_object(fullpath)
@@ -128,10 +139,18 @@ def main():
 
     datafiles = get_filelist(file_path)
 
-    logger.info(f"Starting a file number {starting_file}, {int(len(datafiles)/2 - starting_file)} files to process")
+    logger.info(f"Starting at file number {starting_file}, {int(len(datafiles)/2 - starting_file)} files to process")
+
+    existing_files = get_preexisting_files(output_location)
 
     for i in range(int((len(datafiles) - starting_file * 2) / 2)):
-        filename = datafiles[starting_file * 2 + (i * 2)]
+        filenumber = starting_file * 2 + (i * 2)
+        logger.info(f"Filenumber: {filenumber / 2}")
+        if filenumber / 2 in existing_files:
+            logger.info(f"File with this number has already been processed, skipping to next file...")
+            continue
+
+        filename = datafiles[filenumber]
         iq, nframes, freq_bin_size, t_bin_size = get_settings(file_path, filename, lframes)
         logger.info(f"filename: {filename}, nframes: {nframes}, f_res: {freq_bin_size}, t_res: {t_bin_size}")
 
